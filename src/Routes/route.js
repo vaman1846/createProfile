@@ -1,18 +1,22 @@
 const express = require("express")
-const { createUser, userLogin, userDetails, updateUser, deleteUser } = require("../Controllers/user")
+const { create_store } = require("../Controllers/storeController")
+const { createUser, userLogin, updateUser, deleteUser, updateStore } = require("../Controllers/user")
 const commnMid = require("../Middleware/Auth")
-const storeModel = require("../Models/storeModel")
 
 const Router = express.Router()
 
 
 Router.post("/user", createUser)
+
 Router.post("/userlogin",userLogin)
-Router.post("/:userId/details",commnMid.jwtValidation,commnMid.authorization,userDetails)
+
 Router.put('/:userId/update',commnMid.jwtValidation,commnMid.authorization,updateUser)
+
 Router.delete('/:userId/delete',commnMid.jwtValidation,commnMid.authorization,deleteUser)
 
-Router.post("/create-store",commnMid.jwtValidation,commnMid.authorization,storeModel) 
+Router.put("/:userId/updatestore",commnMid.jwtValidation,commnMid.authorization,updateStore)
+
+Router.post("/:userId/create-store",commnMid.jwtValidation,commnMid.authorization,create_store) 
 
 
 Router.all("/**", function (req, res) {

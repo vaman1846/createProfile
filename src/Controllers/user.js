@@ -1,7 +1,8 @@
 const userModel = require("../Models/userModel")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
-const userDetail = require("../Models/userDetail");
+const storeModel = require("../Models/storeModel");
+// const userDetail = require("../Models/userDetail");
 
 
 const createUser = async function (req, res) {
@@ -80,36 +81,6 @@ const userLogin = async function (req, res) {
     }
 };
 
-const userDetails= async function (req, res) {
-    try {
-        let data = req.body
-        
-        //***********check if the body is empty**************//
-        if (Object.keys(data).length == 0) {
-            return res.status(400).send({
-                status: false,
-                message: "Body should  be not Empty please enter some details"
-            })
-        }
-        
-        const detailCreated = await userDetail.create(data)
-
-        // const detail= await userDetail.create(detail)
-        return res.status(201).send({
-            status: true,
-            message: "User detail fill successfully",
-            data: detailCreated
-        })
-    }
-    catch (error) {
-        return res.status(500).send({
-            status: false,
-            message: error.message
-        })
-    }
-};
-
-
 
  const updateUser =async function (request,response) {
     try {
@@ -131,6 +102,37 @@ const userDetails= async function (req, res) {
      }   
 }
 
+
+const updateStore = async function(request,response){
+    try {
+        const userId = request.body.userId;
+    
+        const update= await storeModel.findOneAndUpdate({userId:userId});
+        if(update!=null){
+            await storeModel.where({userId:userId}).update(request.body)
+            response.status(200).send({message:"Data Updated"})
+        }
+        else{
+            response.status(400).send({message:'user not found'})
+        }
+
+    } catch (error) {
+        res.send(400).send({message:"Error"})
+    }
+}
+
+// try {
+//     const roll=parseInt(request.params.roll);
+//     const student=await StudentModel.findOne({roll:roll});
+//     if(student!=null){
+//         await StudentModel.where({roll:roll}).update(request.body)
+//         response.status(StatusCodes.OK).json({message:'Data updated'});
+//     }
+//     else{
+//         response.status(StatusCodes.NOT_FOUND).json({message:'Student not found'});
+//     }
+    
+//  }
 
 
 const deleteUser =async function (request,response) {
@@ -173,5 +175,5 @@ const deleteUser =async function (request,response) {
 // }
 
 
-module.exports = { createUser, userLogin,userDetails, updateUser, deleteUser}
+module.exports = { createUser, userLogin,updateUser,updateStore, deleteUser}
     // { title, body, created By, Active/Inactive, geolocation }

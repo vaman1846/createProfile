@@ -2,10 +2,25 @@ const mongoose = require("mongoose")
 
 const storeSchema = mongoose.Schema({
     userId:{ type:String , required: true },
-    address:{ type:String, required: true },
-    pin: { type:String, required: true },
-    location:{ 
-        type:{ type:String, required: true },
+    title: {
+        type: String,
+        required: true,
+      },
+      body: {
+        type: String,
+        required: true,
+      },
+      created_by: {
+        type: String,
+        required: true,
+      },
+      active: {
+        type: String,
+        require: true,
+      },
+    geolocation:{ 
+        type:{ type:String,
+             required: true },
     coordinates:[]
 }
 });
